@@ -61,18 +61,17 @@ or use updateOne or updateMany
 
 ### Replace the document
 
-    > db.students.replaceOne({obj}, {obj});
+    > db.students.replaceOne({key:value}, {key:value});
 
 # Delete
 
-    > db.students.deleteMany({obj});
+    > db.students.deleteMany({key:value});
 
-    > db.students.remove({obj});
+    > db.students.remove({key:value});
 
-    > db.students.deleteOne({obj});
+    > db.students.deleteOne({key:value});
 
-    > db.students.remove() and db.students.remove({}) will remove all documents 
-from the collection
+    > db.students.remove() and db.students.remove({}) will remove all documents from the collection
 
 # Read
 
@@ -80,21 +79,23 @@ from the collection
 
     > db.students.findOne({name:'Tom'});\\finds one
 
-    > db.people.find({name: 'Tom'}, {_id: 0, age: 1}); \\ will exclude docs with _id and
- include only the age field
+    > db.people.find({name: 'Tom'}, {_id: 0, age: 1}); \\ will exclude docs with _id and include only the age field
 
     > db.students.find().pretty(); // displays the collection
 
 # Update of Embedded documents
 
-   for this document:
+for this document:
+
     {name: 'Tom', age: 28, marks: [50, 60, 70]}
-   updates Tom's marks to55 where marks are 50
-     db.people.update({name: "Tom", marks: 50}, {"$set": {"marks.$": 55}})
+updates Tom's marks to55 where marks are 5
+0
+    db.people.update({name: "Tom", marks: 50}, {"$set": {"marks.$": 55}})
 
 ### Updates values in array
 
-   for the document:
+for the document:
+
     { "_id" : 1, "grades" : [ 80, 85, 90 ] }
 
     db.students.update({ _id: 1, grades: 80 },{ $set: { "grades.$" : 82 } }
@@ -106,4 +107,49 @@ from the collection
     // This removes the string 'Tommy' from the nicknames array in Tom's document.         
 
 
+# Quering for data
 
+retrieve al elements in a collection
+
+    > db.collection.find({});
+
+retrieve documents in a collection using a condition ( similar to WHERE in MYSQL )
+
+    > db.collection.find({key: value});
+
+retrieve documents in a collection using Boolean conditions (Query Operators)
+
+    > db.collection.find( {$and: [{ key: value }, { key: value }]}); //AND
+
+    > db.collection.find( {$or: [{ key: value }, { key: value }]}); //OR
+
+    > db.inventory.find( { key: { $not: value } } ); //NOT
+
+### FindOne()
+
+ the querying functionality is similar to find() but this will end execution the moment it finds one document matching
+its condition , if used with and empty object , it will fetch the first document and return it.
+
+To list the collection:
+
+    > db.collection.find({});
+
+To skip first 3 documents:
+
+    > db.collection.find({}).skip(3);
+
+To sort descending by the field name:
+
+    > db.collection.find({}).sort({ "name" : -1});
+
+To count the results:
+
+    > db.collection.find({}).count();
+
+### AND Queries
+
+    > db.people.find({$and: [{"name":"Tom"}, {"age":{"$gte":25}}]});
+
+### OR Queries
+
+    > db.students.find({"$or": [{"firstName": "Prosen"}, {"age": {"$gte": 23}}]});
