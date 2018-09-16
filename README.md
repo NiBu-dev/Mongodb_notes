@@ -153,3 +153,20 @@ To count the results:
 ### OR Queries
 
     > db.students.find({"$or": [{"firstName": "Prosen"}, {"age": {"$gte": 23}}]});
+
+# Aggregation
+
+Get the number of occurencies
+
+    > db.collections.count({key:value});
+
+or
+
+    > db.collections.find({key:value}).length();
+
+## SUM
+calculate the sum for the specified objects data identifiers
+
+$group - take in consideration the group stage
+
+  >  db.students.aggregate([{$group:{_id:124,total:{$sum:'$balance'}}}]);
